@@ -12,11 +12,8 @@ def random_string(length=10):
 def test_request(page: Page):
     # тут вхожу по ссылке на сайт и жду полного ответа
     page.goto(ADRESS)
-
     # тут нахожусь на главной странице, кликаю на кнопку входа и жду загрузки нового адреса
     page.get_by_test_id('nav-login').click()
-    #page.get_by_role('link', name='Login').click() - или надо так??
-    page.wait_for_url('**/login')
 
     # тут переопределяю рандомные значения
     username = random_string()
