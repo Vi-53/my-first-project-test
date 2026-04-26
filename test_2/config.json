@@ -1,0 +1,6 @@
+{
+  "base_url": "http://144.31.139.115:5000/",
+  "browser": "chromium",
+  "timeout": 10000,
+  "headless": false
+}
