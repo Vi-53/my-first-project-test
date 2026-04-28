@@ -1,23 +1,21 @@
 import pytest
 from pages.home_page import HomePage
 from pages.search_results_page import SearchPage
+from utils.enum import SortType
 
 
-@pytest.mark.parametrize(
-    "name, n, filter_type",
-    [
-        ("city", 10, "Price: low to high"),
-        ("city", 15, "Price: high to low"),
-        ("habits", 10, "Price: low to high"),
-        ("habits", 15, "Price: high to low"),
-    ]
-)
+@pytest.mark.parametrize("name", ["city", "habits"])
+@pytest.mark.parametrize("n", [10, 15])
+@pytest.mark.parametrize("filter_type",
+    [SortType.LOW_TO_HIGH, SortType.HIGH_TO_LOW]
+                         )
 
 def test_1(page, config, name, n, filter_type):
+    page.goto(config.base_url)
+
     home_page = HomePage(page)
     search_page = SearchPage(page)
 
-    home_page.open_base_url(config.base_url)
     home_page.search(name)
 
     search_page.take_filter(filter_type)
@@ -25,10 +23,10 @@ def test_1(page, config, name, n, filter_type):
 
     assert len(prices) >= n, f"Найдено меньше {n} цен, Всего: {len(prices)}"
 
-    if filter_type == "Price: low to high":
-        assert search_page.low_to_high(prices), \
+    if filter_type == SortType.LOW_TO_HIGH:
+        assert prices == sorted(prices), \
             f"Цены не отсортированы по возрастанию: {prices}"
 
-    elif filter_type == "Price: high to low":
-        assert search_page.high_to_low(prices), \
+    elif filter_type == SortType.HIGH_TO_LOW:
+        assert prices == sorted(prices, reverse=True), \
             f"Цены не отсортированы по убыванию: {prices}"

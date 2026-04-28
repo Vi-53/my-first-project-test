@@ -1,13 +1,13 @@
+from playwright.sync_api import Page
 from pages.base_page import BasePage
 
 
 class HomePage(BasePage):
-    SEARCH_INPUT = "//*[@id='search']"
-    SEARCH_BUTTON = "//*[@data-testid='search-button']"
-
-    def open_base_url(self, base_url: str):
-        self.open(base_url)
+    def __init__(self, page: Page):
+        super().__init__(page)
+        self.search_input = page.locator("//*[@id='search']")
+        self.search_button = page.get_by_test_id("search-button")
 
     def search(self, name: str):
-        self.page.locator(self.SEARCH_INPUT).fill(name)
-        self.page.locator(self.SEARCH_BUTTON).click()
+        self.search_input.fill(name)
+        self.search_button.click()
