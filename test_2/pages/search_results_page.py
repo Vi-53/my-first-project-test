@@ -6,10 +6,14 @@ class SearchPage(BasePage):
         super().__init__(page)
         self.filter = page.locator("//*[@id='sort']")
         self.search_prices = page.locator("//*[starts-with(@data-testid, 'search-result-price-')]")
+        self.loader = page.get_by_test_id("results-loader-svg")
 
     def take_filter(self, filter_type: str):
         self.filter.select_option(label=filter_type)
-        self.page.wait_for_load_state("networkidle")
+
+        self.loader.wait_for(state="hidden")
+        self.search_prices.first.wait_for()
+        self.page.wait_for_timeout(500)
 
     def get_n_prices(self, n: int):
         prices = self.search_prices.all_inner_texts()

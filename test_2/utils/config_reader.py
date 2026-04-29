@@ -3,18 +3,19 @@ from pathlib import Path
 
 
 class ConfigReader:
-    instance = None
-    config = None
+    _instances = {}
 
     def __new__(cls, config_path="config.json"):
-        if cls.instance is None:
-            cls.instance = super().__new__(cls)
-            cls.instance.load_config(config_path)
-        return cls.instance
+        config_path = Path(config_path).resolve()
 
-    def load_config(self, config_path):
-        path = Path(config_path)
-        with path.open("r", encoding="utf-8") as file:
+        if config_path not in cls._instances:
+            instance = super().__new__(cls)
+            instance._load_config(config_path)
+            cls._instances[config_path] = instance
+        return cls._instances[config_path]
+
+    def _load_config(self, config_path):
+        with open(config_path, "r", encoding="utf-8") as file:
             self.config = json.load(file)
 
     @property
