@@ -11,9 +11,9 @@ class SearchPage(BasePage):
     def take_filter(self, filter_type: str):
         self.filter.select_option(label=filter_type)
 
+        self.loader.wait_for(state="visible")
         self.loader.wait_for(state="hidden")
         self.search_prices.first.wait_for()
-        self.page.wait_for_timeout(500)
 
     def get_n_prices(self, n: int):
         prices = self.search_prices.all_inner_texts()
