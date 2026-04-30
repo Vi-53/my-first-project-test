@@ -4,13 +4,12 @@ from pages.search_results_page import SearchPage
 from utils.enum import SortType
 
 
+@pytest.mark.parametrize("name", ["city", "habits"])
 @pytest.mark.parametrize(
-    "name, n, filter_type",
+    "n, filter_type",
     [
-        ("city", 10, SortType.LOW_TO_HIGH),
-        ("city", 15, SortType.HIGH_TO_LOW),
-        ("habits", 10, SortType.LOW_TO_HIGH),
-        ("habits", 15, SortType.HIGH_TO_LOW),
+        (10, SortType.LOW_TO_HIGH),
+        (15, SortType.HIGH_TO_LOW),
     ]
 )
 
