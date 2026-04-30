@@ -13,7 +13,6 @@ class SearchPage(BasePage):
 
         self.loader.wait_for(state="visible")
         self.loader.wait_for(state="hidden")
-        self.search_prices.first.wait_for()
 
     def get_n_prices(self, n: int):
         prices = self.search_prices.all_inner_texts()
