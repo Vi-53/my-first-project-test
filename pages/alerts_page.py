@@ -5,12 +5,6 @@ from ui.web_element import WebElement
 
 
 class AlertsPage(BasePage):
-    ALERT_TEXT = "I am a JS Alert"
-    CONFIRM_TEXT = "I am a JS Confirm"
-    PROMPT_TEXT = "I am a JS prompt"
-
-    RESULT_ALERT_TEXT = "You successfully clicked an alert"
-    RESULT_CONFIRM_TEXT = "You clicked: Ok"
 
     def __init__(self, page: Page) -> None:
         super().__init__(page)

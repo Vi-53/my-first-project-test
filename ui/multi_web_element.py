@@ -9,7 +9,7 @@ class MultiWebElement:
             self,
             locator: Locator,
             description: str,
-) -> None:
+    ) -> None:
         self.locator = locator
         self.description = description
         self.index = 0
@@ -25,7 +25,7 @@ class MultiWebElement:
             raise StopIteration
 
         element = self.nth(self.index)
-        self.index+=1
+        self.index += 1
 
         return element
 

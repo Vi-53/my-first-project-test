@@ -1,4 +1,4 @@
-from config.settings import BASE_URL
+BASE_URL = "https://the-internet.herokuapp.com"
 
 BASIC_AUTH_URL = f"{BASE_URL}/basic_auth"
 ALERTS_URL = f"{BASE_URL}/javascript_alerts"

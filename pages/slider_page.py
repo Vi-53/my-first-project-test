@@ -47,15 +47,15 @@ class SliderPage(BasePage):
         return values
 
     def get_min_value(self) -> float:
-        return self._get_slider_attribute_as_float("min")
+        return self._get_slider_attribute("min")
 
     def get_max_value(self) -> float:
-        return self._get_slider_attribute_as_float("max")
+        return self._get_slider_attribute("max")
 
     def get_step(self) -> float:
-        return self._get_slider_attribute_as_float("step")
+        return self._get_slider_attribute("step")
 
-    def _get_slider_attribute_as_float(self, attribute: str) -> float:
+    def _get_slider_attribute(self, attribute: str) -> float:
         value = self.slider.get_attribute(attribute)
 
         if value is None:

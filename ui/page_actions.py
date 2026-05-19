@@ -1,7 +1,7 @@
 import logging
 from collections.abc import Callable
 
-from playwright.sync_api import Dialog, Page
+from playwright.sync_api import Dialog, Page, Download
 from typing import Literal
 
 from logger import LOGGER_NAME
@@ -100,3 +100,16 @@ class PageActions:
 
         return message
 
+    def run_and_expect_download(self, action: Callable[[], None]) -> Download:
+        logger.info(f"PageActions: expect download")
+
+        with self.page.expect_download() as download_info:
+            action()
+
+        download = download_info.value
+
+        logger.info(
+            f"PageActions: downloaded file '{download.suggested_filename}'"
+        )
+
+        return download

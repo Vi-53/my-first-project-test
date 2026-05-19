@@ -5,8 +5,6 @@ from ui.multi_web_element import MultiWebElement
 
 
 class DownloadPage(BasePage):
-    THIRD_FILE_INDEX = 2
-
     def __init__(self, page: Page):
         super().__init__(page)
 
@@ -21,10 +19,9 @@ class DownloadPage(BasePage):
     def download_file_by_index(self, index: int) -> str:
         file_link = self.files.nth(index)
 
-        with self.page.expect_download() as download_info:
-            file_link.click()
-
-        download = download_info.value
+        download = self.actions.run_and_expect_download(
+            action=file_link.click,
+        )
 
         return download.suggested_filename
 

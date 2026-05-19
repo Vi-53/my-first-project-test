@@ -1,6 +1,5 @@
 from playwright.sync_api import Page
 
-from config.settings import BASE_URL
 from ui.page_actions import PageActions
 
 
