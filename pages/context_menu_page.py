@@ -5,16 +5,14 @@ from ui.web_element import WebElement
 
 
 class ContextMenuPage(BasePage):
-    PATH = "/context_menu"
-
     ALERT_TEXT = "You selected a context menu"
 
     def __init__(self, page: Page) -> None:
         super().__init__(page)
 
         self.hot_spot = WebElement(
-            locator = self.page.locator("//*[@id='hot-spot']"),
-            description = "Context menu -> hot spot area",
+            locator=self.page.locator("//*[@id='hot-spot']"),
+            description="Context menu -> hot spot area",
         )
 
     def right_click_hot_spot(self) -> str:

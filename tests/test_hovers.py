@@ -1,10 +1,11 @@
 from pages.hovers_page import HoversPage
+from config.routes import HOVERS_URL
 
 
-def test_hovers(page):
+def test_hovers(page, actions):
+    actions.goto(HOVERS_URL)
+
     hovers_page = HoversPage(page)
-
-    hovers_page.open()
 
     users_count = hovers_page.get_users_count()
 
@@ -12,6 +13,6 @@ def test_hovers(page):
         hovers_page.hover_user(index)
 
         actual_name = hovers_page.get_user_name(index)
-        expected_name = f"name: user{index+1}"
+        expected_name = f"name: user{index + 1}"
 
         assert actual_name == expected_name

@@ -15,12 +15,12 @@ class MultiWebElement:
         self.index = 0
 
     def __iter__(self) -> Self:
-        # делает объект перебираемым
+        """делает объект перебираемым"""
         self.index = 0
         return self
 
     def __next__(self) -> WebElement:
-        # говорит, какой элем взять следующим при переборе
+        """говорит, какой элем взять следующим при переборе"""
         if self.index >= self.count():
             raise StopIteration
 
@@ -30,34 +30,34 @@ class MultiWebElement:
         return element
 
     def nth(self, index: int) -> WebElement:
-        # возвращает элем по номеру
+        """возвращает элем по номеру"""
         return WebElement(
             locator=self.locator.nth(index),
             description=f"{self.description}[{index}]",
         )
 
     def first(self) -> WebElement:
-        # возвращает первый элем из набора
+        """возвращает первый элем из набора"""
         return WebElement(
             locator=self.locator.first,
             description=f"{self.description}[first]",
         )
 
     def last(self) -> WebElement:
-        # возвращ. последний элемент из набора
+        """возвращ. последний элемент из набора"""
         return WebElement(
             locator=self.locator.last,
             description=f"{self.description}[last]",
         )
 
     def count(self) -> int:
-        # считает, сколько элем. найдено на странице
+        """считает, сколько элем. найдено на странице"""
         return self.locator.count()
 
     def all(self) -> list[WebElement]:
-        # возвращает список всех элементов
+        """возвращает список всех элементов"""
         return [self.nth(index) for index in range(self.count())]
 
     def __str__(self) -> str:
-        # строковое представление объекта
+        """строковое представление объекта"""
         return f"MultiWebElement[{self.description}]"

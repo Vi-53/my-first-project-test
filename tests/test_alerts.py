@@ -1,15 +1,15 @@
 from faker import Faker
 
 from pages.alerts_page import AlertsPage
-
+from config.routes import ALERTS_URL
 
 fake = Faker()
 
 
-def  test_alerts(page):
-    alerts_page = AlertsPage(page)
+def test_alerts(page, actions):
+    actions.goto(ALERTS_URL)
 
-    alerts_page.open()
+    alerts_page = AlertsPage(page)
 
     alert_message = alerts_page.click_alert_and_accept()
 

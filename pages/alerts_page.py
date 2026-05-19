@@ -5,8 +5,6 @@ from ui.web_element import WebElement
 
 
 class AlertsPage(BasePage):
-    PATH = "/javascript_alerts"
-
     ALERT_TEXT = "I am a JS Alert"
     CONFIRM_TEXT = "I am a JS Confirm"
     PROMPT_TEXT = "I am a JS prompt"
@@ -55,5 +53,3 @@ class AlertsPage(BasePage):
 
     def get_result_text(self) -> str:
         return self.result.get_inner_text()
-
-

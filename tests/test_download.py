@@ -1,10 +1,11 @@
 from pages.download_page import DownloadPage
+from config.routes import DOWNLOAD_URL
 
 
-def test_download_third_file(page):
+def test_download_third_file(page, actions):
+    actions.goto(DOWNLOAD_URL)
+
     download_page = DownloadPage(page)
-
-    download_page.open()
 
     assert download_page.get_files_count() >= 3
 

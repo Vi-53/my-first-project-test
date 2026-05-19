@@ -7,28 +7,23 @@ from ui.web_element import WebElement
 
 
 class UploadPage(BasePage):
-    PATH = "/upload"
-
-    SUCCESS_TEXT = "File Uploaded!"
 
     def __init__(self, page: Page) -> None:
         super().__init__(page)
 
-        # Поле для загрузки не работает корректно, поэтому тут буду
-        # использовать кнопку
         self.file_input = WebElement(
-            locator = self.page.locator("//*[@id='file-upload']"),
-            description = "upload page -> upload input",
+            locator=self.page.locator("//*[@id='file-upload']"),
+            description="upload page -> upload input",
         )
 
         self.upload_button = WebElement(
-            locator = self.page.locator("//*[@id='file-submit']"),
-            description = "upload page -> upload button",
+            locator=self.page.locator("//*[@id='file-submit']"),
+            description="upload page -> upload button",
         )
 
         self.success_message = WebElement(
-            locator = self.page.locator("//*[@class='example']/h3"),
-            description = "upload page -> success message",
+            locator=self.page.locator("//*[@class='example']/h3"),
+            description="upload page -> success message",
         )
 
         self.uploaded_file_name = WebElement(

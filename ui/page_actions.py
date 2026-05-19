@@ -14,37 +14,37 @@ class PageActions:
         self.page = page
 
     def goto(self, url:str) -> None:
-        # открывает юрл в браузере
+        """открывает юрл в браузере"""
         logger.info(f"PageActions: goto '{url}'")
         self.page.goto(url)
 
     def wait_for_load_state(self, state: str | None = None) -> None:
-        # ждет пока стр загрузится
+        """ждет пока стр загрузится"""
         logger.info(f"PageActions: wait for load state '{state}'")
         self.page.wait_for_load_state(state)
 
     def expect_new_page(self):
-        # нужен, чтобы после клика открывать новую вкладку
+        """нужен, чтобы после клика открывать новую вкладку"""
         logger.info(f"PageActions: expect new page")
         return self.page.context.expect_page()
 
     def close_page(self) -> None:
-        # закрывает текущую вкладку
+        """закрывает текущую вкладку"""
         logger.info(f"PageActions: close page")
         self.page.close()
 
     def bring_to_front(self) -> None:
-        # делает нужную страницу активной
+        """делает нужную страницу активной"""
         logger.info(f"PageActions: bring page to front")
         self.page.bring_to_front()
 
     def run_and_accept_alert(self, action: Callable[[], None]) -> str:
-        # выполняет действие, ждет alert/confirm и нажимает ок
+        """выполняет действие, ждет alert/confirm и нажимает ок"""
         logger.info(f"PageActions: accept dialog")
         return self._handle_dialog(action=action, mode="accept")
 
     def run_and_dismiss_alert(self, action: Callable[[], None]) -> str:
-        # выполняет действие, ждёт alert/confirm и нажимает Cancel
+        """выполняет действие, ждёт alert/confirm и нажимает Cancel"""
         logger.info(f"PageActions: dismiss dialog")
         return self._handle_dialog(action=action, mode="dismiss")
 
@@ -53,7 +53,7 @@ class PageActions:
             action: Callable[[], None],
             prompt_text: str,
     ) -> str:
-        # нужен для prompt — окна, где вводим текст
+        """нужен для prompt — окна, где вводим текст"""
         logger.info(f'PageActions: accept prompt')
 
         return self._handle_dialog(
@@ -68,7 +68,7 @@ class PageActions:
             mode: Literal["accept", "dismiss"],
             prompt_text: str | None = None,
     ) -> str:
-        # Чтобы не дублировать один и тот же код три раза
+        """Чтобы не дублировать один и тот же код три раза"""
         logger.info(f"PageActions: expect dialog")
         message = ""
         dialog_was_shown = False

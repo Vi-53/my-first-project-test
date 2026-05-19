@@ -2,11 +2,13 @@ import pytest
 from playwright.sync_api import Browser, Page, sync_playwright
 
 from logger import setup_logger
+from ui.page_actions import PageActions
 
 
 @pytest.fixture(scope="session", autouse=True)
 def init_logger():
     setup_logger()
+
 
 @pytest.fixture(scope="session")
 def browser() -> Browser:
@@ -17,6 +19,7 @@ def browser() -> Browser:
         yield browser
 
         browser.close()
+
 
 @pytest.fixture()
 def page(browser: Browser) -> Page:
@@ -33,3 +36,8 @@ def page(browser: Browser) -> Page:
     yield page
 
     context.close()
+
+
+@pytest.fixture()
+def actions(page: Page) -> PageActions:
+    return PageActions(page)

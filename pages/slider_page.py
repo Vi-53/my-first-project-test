@@ -1,51 +1,64 @@
-import random
-
 from playwright.sync_api import Page
 from pages.base_page import BasePage
 from ui.web_element import WebElement
 
 
 class SliderPage(BasePage):
-    PATH = "/horizontal_slider"
-
-    STEP = 0.5
-    ALL_VALUES = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5]
-
     def __init__(self, page: Page) -> None:
         super().__init__(page)
 
         self.slider = WebElement(
-            locator = self.page.locator("//*[@type='range']"),
-            description = "Slider page -> horizontal slider",
+            locator=self.page.locator("//*[@type='range']"),
+            description="Slider page -> horizontal slider",
         )
 
         self.slider_value = WebElement(
-            locator = self.page.locator("//*[@id='range']"),
-            description = "Slider page -> Slider value",
+            locator=self.page.locator("//*[@id='range']"),
+            description="Slider page -> Slider value",
         )
 
-    def set_random_value_on_keyboard(self) -> str:
-        random_value = random.choice(self.ALL_VALUES)
+    def set_value_by_keyboard(self, target_value: float) -> None:
+        min_value = self.get_min_value()
+        step = self.get_step()
 
         self.slider.focus()
+        self.slider.press("Home")
 
-        for _ in range(10):
-            # сбрасываем слайдер до нуля
-            self.slider.press("ArrowLeft")
-
-        steps_count = int(random_value / self.STEP)
+        steps_count = round((target_value - min_value) / step)
 
         for _ in range(steps_count):
             self.slider.press("ArrowRight")
 
-        return self._format_slider_value(random_value)
-
     def get_slider_value(self) -> str:
         return self.slider_value.get_inner_text()
 
-    @staticmethod
-    def _format_slider_value(value: float) -> str:
-        if isinstance(value, int):
-            return str(int(value))
+    def get_available_non_boundary_values(self) -> list[float]:
+        min_value = self.get_min_value()
+        max_value = self.get_max_value()
+        step = self.get_step()
 
-        return str(value)
+        values = []
+        current_value = min_value + step
+
+        while current_value < max_value:
+            values.append(round(current_value, 10))
+            current_value += step
+
+        return values
+
+    def get_min_value(self) -> float:
+        return self._get_slider_attribute_as_float("min")
+
+    def get_max_value(self) -> float:
+        return self._get_slider_attribute_as_float("max")
+
+    def get_step(self) -> float:
+        return self._get_slider_attribute_as_float("step")
+
+    def _get_slider_attribute_as_float(self, attribute: str) -> float:
+        value = self.slider.get_attribute(attribute)
+
+        if value is None:
+            raise RuntimeError(f"Slider attribute '{attribute}' was not found")
+
+        return float(value)

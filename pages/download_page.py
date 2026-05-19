@@ -5,15 +5,13 @@ from ui.multi_web_element import MultiWebElement
 
 
 class DownloadPage(BasePage):
-    PATH = "/download"
-
     THIRD_FILE_INDEX = 2
 
     def __init__(self, page: Page):
         super().__init__(page)
 
         self.files = MultiWebElement(
-            locator=self.page.locator("//*[@class='example']/a"),
+            locator=self.page.locator("//*[contains(@class, 'example')]/a"),
             description="Download page -> Files",
         )
 
