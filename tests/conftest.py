@@ -22,7 +22,7 @@ def init_logger():
 def browser() -> Browser:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(
-            headless=False,
+            headless=True,
         )
         yield browser
 
