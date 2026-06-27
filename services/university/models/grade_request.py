@@ -1,4 +1,8 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
+
+
+MIN_GRADE = 2
+MAX_GRADE = 5
 
 
 class GradeRequest(BaseModel):
@@ -6,4 +10,4 @@ class GradeRequest(BaseModel):
 
     teacher_id: int
     student_id: int
-    grade: int
+    grade: int = Field(ge=MIN_GRADE, le=MAX_GRADE)

@@ -1,30 +1,31 @@
-from typing import Any
-
 import pytest
 
+from services.university.models.grade_response import GradeResponse
+from services.university.models.grade_stats_response import GradeStatsResponse
 from tests.assertions import assert_stats_equal
 from tests.scenarios import create_grades_scenario
 
 
 def calculate_expected_stats(
-        grades: list[dict[str, Any]],
-) -> dict[str, int | float | None]:
-    grade_values = [grade["grade"] for grade in grades]
+        grades: list[GradeResponse],
+) -> GradeStatsResponse:
+    grade_values = [grade.grade for grade in grades]
 
     if not grade_values:
-        return {
-            "count": 0,
-            "min": None,
-            "max": None,
-            "avg": None,
-        }
+        return GradeStatsResponse(
+            count=0,
+            min=None,
+            max=None,
+            avg=None,
+        )
 
-    return {
-        "count": len(grade_values),
-        "min": min(grade_values),
-        "max": max(grade_values),
-        "avg": sum(grade_values) / len(grade_values),
-    }
+
+    return GradeStatsResponse(
+        count=len(grade_values),
+        min=min(grade_values),
+        max=max(grade_values),
+        avg=sum(grade_values) / len(grade_values),
+    )
 
 
 def get_unknown_student_id(university_service_admin) -> int:
@@ -32,7 +33,8 @@ def get_unknown_student_id(university_service_admin) -> int:
 
     if not students:
         return 1
-    max_student_id = max(student["id"] for student in students)
+
+    max_student_id = max(student.id for student in students)
 
     return max_student_id + 1
 
@@ -60,15 +62,15 @@ def test_get_grades_stats_for_unknown_student_empty_stats(
     )
 
     actual_stats = university_service_admin.get_grade_stats(
-        params={"student_id": unknown_student_id},
+        student_id=unknown_student_id,
     )
 
-    expected_stats = {
-        "count": 0,
-        "min": None,
-        "max": None,
-        "avg": None,
-    }
+    expected_stats = GradeStatsResponse(
+        count=0,
+        min=None,
+        max=None,
+        avg=None,
+    )
 
     assert_stats_equal(
         actual=actual_stats,
@@ -98,7 +100,7 @@ def test_get_grades_stats_calculates_filtered_stats_correctly(
     )
 
     actual_stats = university_service_admin.get_grade_stats(
-        params={param_name: param_value},
+        **{param_name: param_value},
     )
 
     assert_stats_equal(

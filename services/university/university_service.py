@@ -3,6 +3,8 @@ from services.university.helpers.grades_helper import GradesHelper
 from services.university.helpers.group_helper import GroupHelper
 from services.university.helpers.student_helper import StudentHelper
 from services.university.helpers.teacher_helper import TeacherHelper
+from services.university.models import student_response
+from services.university.models.base_student import DegreeEnum
 from services.university.models.grade_request import GradeRequest
 from services.university.models.grade_response import GradeResponse
 from services.university.models.grade_stats_response import GradeStatsResponse
@@ -12,9 +14,15 @@ from services.university.models.student_request import StudentRequest
 from services.university.models.student_response import StudentResponse
 from services.university.models.teacher_request import TeacherRequest
 from services.university.models.teacher_response import TeacherResponse
-
 from utils.api_utils import ApiUtils
 
+
+def remove_none_values(params: dict) -> dict:
+    return {
+        key: value
+        for key, value in params.items()
+        if value is not None
+    }
 
 class UniversityService(BaseService):
     SERVICE_URL = "http://127.0.0.1:8001"
@@ -43,14 +51,63 @@ class UniversityService(BaseService):
         response = self.grades_helper.post_grade(data=grade_request.model_dump())
         return GradeResponse(**response.json())
 
-    def get_grades(self, params: dict | None = None) -> list[dict]:
-        response = self.grades_helper.get_grades(params=params)
-        return response.json()
+    def get_grades(
+            self,
+            student_id: int | None = None,
+            teacher_id: int | None = None,
+    ) -> list[GradeResponse]:
+        params = remove_none_values(
+            {
+                "student_id": student_id,
+                "teacher_id": teacher_id,
+            }
+        )
 
-    def get_grade_stats(self, params: dict | None = None) -> GradeStatsResponse:
+        response = self.grades_helper.get_grades(params=params)
+
+        return [
+            GradeResponse(**grade)
+            for grade in response.json()
+        ]
+
+    def get_grade_stats(
+            self,
+            student_id: int | None = None,
+            teacher_id: int | None = None,
+            group_id: int | None = None,
+    ) -> GradeStatsResponse:
+        params = remove_none_values(
+            {
+                "student_id": student_id,
+                "teacher_id": teacher_id,
+                "group_id": group_id,
+            }
+        )
+
         response = self.grades_helper.get_stats(params=params)
         return GradeStatsResponse(**response.json())
 
-    def get_students(self, params: dict | None = None) -> list[dict]:
+    def get_students(
+            self,
+            first_name: str | None = None,
+            last_name: str | None = None,
+            email: str | None = None,
+            degree: DegreeEnum | None = None,
+            phone: str | None = None,
+            group_id: int | None = None,
+    )-> list[StudentResponse]:
+        params = remove_none_values(
+            {
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email,
+                "degree": degree.value if degree is not None else None,
+                "phone": phone,
+                "group_id": group_id,
+            }
+        )
         response = self.student_helper.get_students(params=params)
-        return response.json()
+        return [
+            StudentResponse(**student)
+            for student in response.json()
+        ]

@@ -51,7 +51,7 @@ def access_token(auth_api_utils_anonym):
 
 @pytest.fixture(scope="function", autouse=False)
 def auth_api_utils_admin(access_token):
-    api_utils = ApiUtils(
+    return ApiUtils(
         url=AuthService.SERVICE_URL,
         headers={"Authorization": f"Bearer {access_token}"}
     )

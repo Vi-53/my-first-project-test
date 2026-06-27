@@ -4,7 +4,6 @@ from faker import Faker
 
 from services.university.models.base_student import DegreeEnum
 from services.university.models.base_teacher import SubjectEnum
-from services.university.models.grade_request import GradeRequest
 from services.university.models.group_request import GroupRequest
 from services.university.models.student_request import StudentRequest
 from services.university.models.teacher_request import TeacherRequest
@@ -34,16 +33,4 @@ def build_student_request(group_id: int) -> StudentRequest:
         degree=random.choice([option for option in DegreeEnum]),
         phone=faker.numerify("+7##########"),
         group_id=group_id,
-    )
-
-
-def build_grade_request(
-        student_id: int,
-        teacher_id: int,
-        grade: int
-) -> GradeRequest:
-    return GradeRequest(
-        student_id=student_id,
-        teacher_id=teacher_id,
-        grade=grade,
     )

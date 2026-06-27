@@ -1,16 +1,18 @@
 from random import randint
 from typing import Any
 
-from data_build import build_grade_request
+from services.university.models.grade_request import (
+    GradeRequest,
+    MAX_GRADE,
+    MIN_GRADE,
+)
+
 from tests.data_build import (
     build_group_request,
-    build_teacher_request,
     build_student_request,
     build_teacher_request,
 )
 
-MIN_GRADE = 2
-MAX_GRADE = 5
 
 MIN_GRADES_COUNT = 3
 MAX_GRADES_COUNT = 6
@@ -55,14 +57,14 @@ def create_grades_scenario(university_service_admin) -> dict[str, Any]:
         grade_value = randint(MIN_GRADE, MAX_GRADE)
 
         grade_response = university_service_admin.create_grade(
-            grade_request=build_grade_request(
+            grade_request=GradeRequest(
                 student_id=student_response.id,
                 teacher_id=teacher_response.id,
                 grade=grade_value,
             ),
         )
 
-        create_grades.append(grade_response.model_dump())
+        create_grades.append(grade_response)
 
     return {
         "student_id": student_response.id,
