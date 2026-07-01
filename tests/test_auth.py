@@ -2,6 +2,7 @@ from faker import Faker
 
 from services.auth.auth_service import AuthService
 from services.auth.models.login_request import LoginRequest
+from services.auth.models.login_response import LoginResponse
 from services.auth.models.register_request import RegisterRequest
 
 faker = Faker()
@@ -33,4 +34,14 @@ def test_login_returns_access_token(auth_api_utils_anonym):
             username=username,
             password=password,
         )
+    )
+    assert isinstance(login_response, LoginResponse), (
+        f"Wrong login response type"
+        f"Actual:'{type(login_response).__name__}'"
+        f"Expected: {LoginResponse.__name__}"
+    )
+
+    assert login_response.access_token != "", (
+        f"Access token should not be empty"
+        f"Actual: '{login_response.access_token}', expected not empty string"
     )

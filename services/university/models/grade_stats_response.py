@@ -8,9 +8,9 @@ class GradeStatsResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     count: int = Field(ge=0)
-    min: int | None = Field(defailt=None, ge=MIN_GRADE, le=MAX_GRADE)
-    max: int | None = Field(defailt=None, ge=MIN_GRADE, le=MAX_GRADE)
-    avg: float | None = Field(defailt=None, ge=MIN_GRADE, le=MAX_GRADE)
+    min: int | None = Field(default=None, ge=MIN_GRADE, le=MAX_GRADE)
+    max: int | None = Field(default=None, ge=MIN_GRADE, le=MAX_GRADE)
+    avg: float | None = Field(default=None, ge=MIN_GRADE, le=MAX_GRADE)
 
     @model_validator(mode="after")
     def validate_stats_consistency(self) -> Self:

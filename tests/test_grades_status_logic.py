@@ -3,7 +3,7 @@ import pytest
 from services.university.models.grade_response import GradeResponse
 from services.university.models.grade_stats_response import GradeStatsResponse
 from tests.assertions import assert_stats_equal
-from tests.scenarios import create_grades_scenario
+from tests.scenarios import create_grades_scenario, create_student_scenario
 
 
 def calculate_expected_stats(
@@ -27,18 +27,6 @@ def calculate_expected_stats(
         avg=sum(grade_values) / len(grade_values),
     )
 
-
-def get_unknown_student_id(university_service_admin) -> int:
-    students = university_service_admin.get_students()
-
-    if not students:
-        return 1
-
-    max_student_id = max(student.id for student in students)
-
-    return max_student_id + 1
-
-
 def test_get_grades_stats_calculates_total_stats_correctly(
         university_service_admin,
 ):
@@ -54,15 +42,21 @@ def test_get_grades_stats_calculates_total_stats_correctly(
     )
 
 
-def test_get_grades_stats_for_unknown_student_empty_stats(
+def test_get_grades_stats_for_student_without_returns_empty_stats(
         university_service_admin,
 ):
-    unknown_student_id = get_unknown_student_id(
+    create_grades_scenario(
+        university_service_admin=university_service_admin
+    )
+
+    student_without_grades_scenario = create_student_scenario(
         university_service_admin=university_service_admin,
     )
 
+    student_without_grades = student_without_grades_scenario["student"]
+
     actual_stats = university_service_admin.get_grade_stats(
-        student_id=unknown_student_id,
+        student_id=student_without_grades.id,
     )
 
     expected_stats = GradeStatsResponse(
@@ -83,6 +77,7 @@ def test_get_grades_stats_for_unknown_student_empty_stats(
     [
         "student_id",
         "teacher_id",
+        "group_id"
     ]
 )
 def test_get_grades_stats_calculates_filtered_stats_correctly(
@@ -101,6 +96,27 @@ def test_get_grades_stats_calculates_filtered_stats_correctly(
 
     actual_stats = university_service_admin.get_grade_stats(
         **{param_name: param_value},
+    )
+
+    assert_stats_equal(
+        actual=actual_stats,
+        expected=expected_stats,
+    )
+
+def test_get_grades_stats_calculates_stats_with_student_and_teacher_filters(
+        university_service_admin,
+):
+    scenario = create_grades_scenario(
+        university_service_admin=university_service_admin,
+    )
+
+    expected_stats = calculate_expected_stats(
+        grades=scenario["grades"],
+    )
+
+    actual_stats = university_service_admin.get_grade_stats(
+        student_id=scenario["student_id"],
+        teacher_id=scenario["teacher_id"],
     )
 
     assert_stats_equal(

@@ -69,6 +69,6 @@ def create_grades_scenario(university_service_admin) -> dict[str, Any]:
     return {
         "student_id": student_response.id,
         "teacher_id": teacher_response.id,
-        "grades": create_grades,
         "group_id": group_response.id,
+        "grades": create_grades,
     }

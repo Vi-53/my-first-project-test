@@ -3,7 +3,6 @@ from services.university.helpers.grades_helper import GradesHelper
 from services.university.helpers.group_helper import GroupHelper
 from services.university.helpers.student_helper import StudentHelper
 from services.university.helpers.teacher_helper import TeacherHelper
-from services.university.models import student_response
 from services.university.models.base_student import DegreeEnum
 from services.university.models.grade_request import GradeRequest
 from services.university.models.grade_response import GradeResponse
@@ -15,14 +14,8 @@ from services.university.models.student_response import StudentResponse
 from services.university.models.teacher_request import TeacherRequest
 from services.university.models.teacher_response import TeacherResponse
 from utils.api_utils import ApiUtils
+from utils.params_utils import remove_none_values
 
-
-def remove_none_values(params: dict) -> dict:
-    return {
-        key: value
-        for key, value in params.items()
-        if value is not None
-    }
 
 class UniversityService(BaseService):
     SERVICE_URL = "http://127.0.0.1:8001"
@@ -76,15 +69,11 @@ class UniversityService(BaseService):
             teacher_id: int | None = None,
             group_id: int | None = None,
     ) -> GradeStatsResponse:
-        params = remove_none_values(
-            {
-                "student_id": student_id,
-                "teacher_id": teacher_id,
-                "group_id": group_id,
-            }
+        response = self.grades_helper.get_stats(
+            student_id=student_id,
+            teacher_id=teacher_id,
+            group_id=group_id,
         )
-
-        response = self.grades_helper.get_stats(params=params)
         return GradeStatsResponse(**response.json())
 
     def get_students(

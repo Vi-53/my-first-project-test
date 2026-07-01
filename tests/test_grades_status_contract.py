@@ -55,7 +55,7 @@ def test_get_grades_stats_with_invalid_id_returns_422(
         param_name,
 ):
     response = grades_helper_admin.get_stats(
-        params={param_name: INVALID_ID_VALUE},
+        **{param_name: INVALID_ID_VALUE},
     )
 
     assert_status_code(
