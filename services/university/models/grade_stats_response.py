@@ -14,15 +14,26 @@ class GradeStatsResponse(BaseModel):
 
     @model_validator(mode="after")
     def validate_stats_consistency(self) -> Self:
+        stats_values = [
+            self.min,
+            self.max,
+            self.avg,
+        ]
         if self.count == 0:
-            if self.min is not None or self.max is not None or self.avg is not None:
+            if any(value is not None for value in stats_values):
                 raise ValueError(
-                    "Empty stats must have min, max or avg equal to None"
+                    "Empty stats must have min, max and avg equal to None"
                 )
             return self
 
-        if self.min is None or self.max is None or self.avg is None:
+        if any(value is None for value in stats_values):
             raise ValueError(
-                "Non-empty stats must have min, max and avg values"
+                f"Non-empty stats must have min, max and avg values"
+            )
+
+        if self.min > self.max:
+            raise ValueError(
+                f"Stats min must be than or equal to max"
+                f"Actual min: '{self.min}', max: 'self.max'"
             )
         return self

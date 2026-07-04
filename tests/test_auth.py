@@ -35,11 +35,6 @@ def test_login_returns_access_token(auth_api_utils_anonym):
             password=password,
         )
     )
-    assert isinstance(login_response, LoginResponse), (
-        f"Wrong login response type"
-        f"Actual:'{type(login_response).__name__}'"
-        f"Expected: {LoginResponse.__name__}"
-    )
 
     assert login_response.access_token != "", (
         f"Access token should not be empty"

@@ -34,7 +34,10 @@ def create_student_scenario(university_service_admin) -> dict[str, Any]:
     }
 
 
-def create_grades_scenario(university_service_admin) -> dict[str, Any]:
+def create_grades_scenario(
+        university_service_admin,
+        grade_values: list[int] | None = None,
+) -> dict[str, Any]:
     group_response = university_service_admin.create_group(
         group_request=build_group_request(),
     )
@@ -49,13 +52,16 @@ def create_grades_scenario(university_service_admin) -> dict[str, Any]:
         ),
     )
 
-    grades_count = randint(MIN_GRADES_COUNT, MAX_GRADES_COUNT)
+    if grade_values is None:
+        grades_count = randint(MIN_GRADES_COUNT, MAX_GRADES_COUNT)
+
+        grade_values = [
+            randint(MIN_GRADE, MAX_GRADE) for _ in range(grades_count)
+        ]
 
     create_grades = []
 
-    for _ in range(grades_count):
-        grade_value = randint(MIN_GRADE, MAX_GRADE)
-
+    for grade_value in grade_values:
         grade_response = university_service_admin.create_grade(
             grade_request=GradeRequest(
                 student_id=student_response.id,

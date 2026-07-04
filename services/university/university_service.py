@@ -15,6 +15,7 @@ from services.university.models.teacher_request import TeacherRequest
 from services.university.models.teacher_response import TeacherResponse
 from utils.api_utils import ApiUtils
 from utils.params_utils import remove_none_values
+from services.general.models.error_response import ErrorResponse
 
 
 class UniversityService(BaseService):
@@ -68,13 +69,17 @@ class UniversityService(BaseService):
             student_id: int | None = None,
             teacher_id: int | None = None,
             group_id: int | None = None,
-    ) -> GradeStatsResponse:
+    ) -> GradeStatsResponse | ErrorResponse:
         response = self.grades_helper.get_stats(
             student_id=student_id,
             teacher_id=teacher_id,
             group_id=group_id,
         )
-        return GradeStatsResponse(**response.json())
+        return self.build_response_model(
+            response=response,
+            success_model=GradeStatsResponse,
+            error_model=ErrorResponse,
+        )
 
     def get_students(
             self,
