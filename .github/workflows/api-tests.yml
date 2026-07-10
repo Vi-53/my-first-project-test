@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -129,7 +132,7 @@ jobs:
     name: Deploy Allure report to GitHub Pages
     runs-on: ubuntu-latest
     needs: api-tests
-    if: always() && github.event.pull_request.head.repo.full_name == github.repository
+    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     permissions:
       pages: write
