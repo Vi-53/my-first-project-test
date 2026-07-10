@@ -1,7 +1,5 @@
-import requests
 from faker import Faker
 
-from conftest import university_api_utils_anonym
 from services.university.helpers.group_helper import GroupHelper
 
 faker = Faker()

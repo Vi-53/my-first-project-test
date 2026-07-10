@@ -2,7 +2,6 @@ from faker import Faker
 
 from services.auth.auth_service import AuthService
 from services.auth.models.login_request import LoginRequest
-from services.auth.models.login_response import LoginResponse
 from services.auth.models.register_request import RegisterRequest
 
 faker = Faker()

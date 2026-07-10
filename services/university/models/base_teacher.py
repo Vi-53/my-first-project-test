@@ -1,6 +1,6 @@
-from pydantic import BaseModel, ConfigDict
-
 from enum import StrEnum
+
+from pydantic import BaseModel, ConfigDict
 
 
 class SubjectEnum(StrEnum):

@@ -1,8 +1,9 @@
-from pydantic import BaseModel, ConfigDict, Field, model_validator
-
 from typing import Self
 
+from pydantic import BaseModel, ConfigDict, Field, model_validator
+
 from services.university.models.grade_request import MAX_GRADE, MIN_GRADE
+
 
 class GradeStatsResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -28,7 +29,7 @@ class GradeStatsResponse(BaseModel):
 
         if any(value is None for value in stats_values):
             raise ValueError(
-                f"Non-empty stats must have min, max and avg values"
+                "Non-empty stats must have min, max and avg values"
             )
 
         if self.min > self.max:

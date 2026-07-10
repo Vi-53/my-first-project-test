@@ -2,8 +2,8 @@ from typing import TypeVar
 
 import requests
 from pydantic import BaseModel
-from utils.api_utils import ApiUtils
 
+from utils.api_utils import ApiUtils
 
 SuccessModelType = TypeVar("SuccessModelType", bound=BaseModel)
 ErrorModelType = TypeVar("ErrorModelType", bound=BaseModel)

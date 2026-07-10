@@ -1,15 +1,15 @@
 import time
 
+import pytest
 import requests
 from faker import Faker
-import pytest
 
 from services.auth.auth_service import AuthService
 from services.auth.models.login_request import LoginRequest
 from services.auth.models.register_request import RegisterRequest
+from services.university.helpers.grades_helper import GradesHelper
 from services.university.university_service import UniversityService
 from utils.api_utils import ApiUtils
-from services.university.helpers.grades_helper import GradesHelper
 
 faker = Faker()
 
@@ -89,7 +89,7 @@ def auth_service_readiness():
         try:
             response = requests.get(AuthService.SERVICE_URL + "/docs")
             response.raise_for_status()
-        except:
+        except requests.RequestException:
             time.sleep(1)
         else:
             break

@@ -2,17 +2,15 @@ from random import randint
 from typing import Any
 
 from services.university.models.grade_request import (
-    GradeRequest,
     MAX_GRADE,
     MIN_GRADE,
+    GradeRequest,
 )
-
 from tests.data_build import (
     build_group_request,
     build_student_request,
     build_teacher_request,
 )
-
 
 MIN_GRADES_COUNT = 3
 MAX_GRADES_COUNT = 6

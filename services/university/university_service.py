@@ -1,4 +1,5 @@
 from services.general.base_service import BaseService
+from services.general.models.error_response import ErrorResponse
 from services.university.helpers.grades_helper import GradesHelper
 from services.university.helpers.group_helper import GroupHelper
 from services.university.helpers.student_helper import StudentHelper
@@ -15,7 +16,6 @@ from services.university.models.teacher_request import TeacherRequest
 from services.university.models.teacher_response import TeacherResponse
 from utils.api_utils import ApiUtils
 from utils.params_utils import remove_none_values
-from services.general.models.error_response import ErrorResponse
 
 
 class UniversityService(BaseService):
