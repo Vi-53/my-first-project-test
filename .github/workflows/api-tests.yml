@@ -35,6 +35,17 @@ jobs:
       - name: Run Ruff linter
         run: |
           ruff check .
+      
+      - name: Prepare env file
+        run: |
+          cat <<EOF > .env
+          POSTGRES_USER=postgres
+          POSTGRES_PASSWORD=postgres
+          POSTGRES_DB_AUTH=auth_db
+          POSTGRES_DB_UNIVERSITY=university_db
+          AUTH_SERVICE_INTERNAL_URL=http://auth-service:8000
+          AUTH_SERVICE_API_URL=http://127.0.0.1:8000
+          EOF
 
       - name: Start tested system with Docker Compose
         run: |

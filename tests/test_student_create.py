@@ -1,7 +1,6 @@
-from data_build import build_group_request, build_student_request
-
 from logger.logger import Logger
 from services.university.university_service import UniversityService
+from tests.data_build import build_group_request, build_student_request
 
 
 class TestStudent:
